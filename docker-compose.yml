@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16
+    container_name: bibliotheque-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: bibliotheque
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
