@@ -1,2 +1,5 @@
 # Réglages locaux des outils
 .claude/
+
+# Exercices et documents sensibles
+KFOKAM48-*.md
