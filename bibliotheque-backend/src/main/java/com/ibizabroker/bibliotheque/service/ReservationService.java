@@ -44,7 +44,7 @@ public class ReservationService {
      * RG-04 : dateExpiration = dateReservation + 7 jours
      */
     public ReservationResponse creerReservation(ReservationRequest request) {
-        if (request.getLivreId() == null && request.getAdherentId() == null) {
+        if (request == null || (request.getLivreId() == null && request.getAdherentId() == null)) {
             throw new IllegalArgumentException("Les champs 'livreId' et 'adherentId' sont obligatoires.");
         }
         if (request.getLivreId() == null) {
@@ -107,10 +107,7 @@ public class ReservationService {
         List<Reservation> reservations;
 
         if (statut != null && adherentId != null) {
-            List<Reservation> all = reservationRepository.findAll();
-            reservations = all.stream()
-                    .filter(r -> r.getStatut() == statut && r.getAdherent().getUserId().equals(adherentId))
-                    .collect(Collectors.toList());
+            reservations = reservationRepository.findByAdherent_UserIdAndStatut(adherentId, statut);
         } else if (statut != null) {
             reservations = reservationRepository.findByStatut(statut);
         } else if (adherentId != null) {
