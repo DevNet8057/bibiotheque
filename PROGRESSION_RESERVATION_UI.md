@@ -10,7 +10,7 @@ Integrer l'ecran de gestion des reservations dans le frontend Angular existant.
 - Palette sombre, cartes arrondies, navigation laterale, filtres et etat vide repris.
 
 ## Etape actuelle
-Module integre a la refonte globale. Le suivi principal se poursuit dans `PROGRESSION_REFONTE_UI.md`.
+Correction du rendu multi-reservations et affichage des statuts de disponibilite des livres.
 
 ## Termine
 - [x] Frames Figma consultees.
@@ -21,12 +21,19 @@ Module integre a la refonte globale. Le suivi principal se poursuit dans `PROGRE
 - [x] Filtres fonctionnels et compteurs par statut.
 - [x] Etats chargement, donnees, vide et erreur avec action Reessayer.
 - [x] Confirmation d'annulation integree a la page.
+- [x] Liste `Tous` rend toutes les reservations et conserve les compteurs globaux.
+- [x] Regression testee avec 3 lignes et 2 actions d'annulation autorisees.
+- [x] Statut `DISPONIBLE`/`INDISPONIBLE` affiche dans le choix des livres.
 
 ## Tests reellement effectues
 - [x] Contrat backend ReservationController verifie.
 - [x] Compilation Angular (`npm run build -- --configuration development`).
 - [x] Tests Angular corriges et completes : 34 tests sur 34 reussis dans Chrome Headless, dont 8 assertions dediees aux Reservations.
-- [ ] Tests fonctionnels, erreurs metier et responsive avec backend et PostgreSQL disponibles.
+- [x] Tests Angular : 35 tests sur 35 reussis dans Chrome Headless.
+- [x] Build Angular development reussi.
+- [x] Tests backend : 11 tests sur 11 reussis avec PostgreSQL 16 actif.
+- [x] API `GET /api/reservations` verifiee : 3 reservations retournees.
+- [ ] Parcours navigateur authentifie et tests responsive manuels : session JWT non partagee dans le navigateur.
 
 ## Fichiers crees
 - `src/app/_model/reservation.ts`
@@ -54,8 +61,7 @@ Module integre a la refonte globale. Le suivi principal se poursuit dans `PROGRE
 - Aucun changement backend ni dependance ajoute.
 
 ## Reste a faire
-- [x] Ajouter/adapter les tests de la page Reservations.
-- [ ] Tester les etats, erreurs metier, annulation et responsive avec backend et PostgreSQL disponibles.
+- [ ] Tester les parcours navigateur authentifies, erreurs metier, annulation et responsive.
 - [ ] Mettre a jour le journal apres chaque etape.
 
 ## Prochaine etape

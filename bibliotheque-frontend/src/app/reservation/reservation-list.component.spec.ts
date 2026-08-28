@@ -32,4 +32,16 @@ describe('ReservationListComponent', () => {
     expect(component.canCancel(reservations[0])).toBeTrue();
     expect(component.canCancel(reservations[1])).toBeFalse();
   });
+
+  it('affiche toutes les reservations du filtre Tous et les actions autorisees', () => {
+    component.reservations = [
+      ...reservations,
+      { reservationId: 3, livreId: 12, livreNom: 'Livre C', adherentId: 22, adherentNom: 'Sara', dateReservation: '2026-08-03', dateExpiration: '2026-08-05', statut: 'DISPONIBLE' }
+    ];
+    component.filter = 'TOUS';
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelectorAll('tbody tr').length).toBe(3);
+    expect(fixture.nativeElement.querySelectorAll('.table-action--danger').length).toBe(2);
+  });
 });

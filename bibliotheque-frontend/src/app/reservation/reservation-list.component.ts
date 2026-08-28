@@ -4,6 +4,7 @@ import { Reservation, ReservationStatus } from '../_model/reservation';
 @Component({ selector: 'app-reservation-list', templateUrl: './reservation-list.component.html', styleUrls: ['./reservation-list.component.css'] })
 export class ReservationListComponent {
   @Input() reservations: Reservation[] = [];
+  @Input() allReservations: Reservation[] = [];
   @Input() loading = false;
   @Input() errorMessage = '';
   @Input() filter: ReservationStatus | 'TOUS' = 'TOUS';
@@ -17,7 +18,8 @@ export class ReservationListComponent {
   selectFilter(filter: ReservationStatus | 'TOUS'): void { this.filterChanged.emit(filter); }
   retry(): void { this.retryRequested.emit(); }
   countFor(status: ReservationStatus | 'TOUS'): number {
-    return status === 'TOUS' ? this.reservations.length : this.reservations.filter(item => item.statut === status).length;
+    const source = this.allReservations.length > 0 ? this.allReservations : this.reservations;
+    return status === 'TOUS' ? source.length : source.filter(item => item.statut === status).length;
   }
   get filteredReservations(): Reservation[] {
     return this.filter === 'TOUS' ? this.reservations : this.reservations.filter(item => item.statut === this.filter);
