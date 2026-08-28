@@ -20,4 +20,5 @@ export class ReservationFormComponent {
   }
 
   reset(): void { this.livreId = null; this.adherentId = null; }
+  bookStatus(book: Books): string { return book.noOfCopies > 0 ? 'DISPONIBLE' : 'INDISPONIBLE'; }
 }
