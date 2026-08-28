@@ -1,22 +1,5 @@
-<h2>Borrow history of {{ user.name }}</h2>
-<table class="table table-info table-striped">
-    <thead>
-        <tr>
-            <th> Book ID </th>
-            <th> Issue Date </th>
-            <th> Return Date </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let borrower of borrow">
-            <td> {{ borrower.bookId }} </td>
-            <td> {{ borrower.issueDate }} </td>
-            <div *ngIf="borrower.returnDate != null">
-                <td> {{ borrower.returnDate }} </td>
-            </div>
-            <div *ngIf="borrower.returnDate === null">
-                <td> Book not returned yet </td>
-            </div>
-        </tr>
-    </tbody>
-</table>
+<div class="app-page"><header class="page-hero"><div class="page-hero__copy"><h1>Historique de l’adhérent</h1><p>{{ user && user.name ? user.name : 'Consultation des emprunts' }}</p></div><a class="secondary-button" routerLink="/users">← Adhérents</a></header>
+  <section *ngIf="loading" class="state-card"><span class="loading-orbit"></span><h2>Chargement de l’historique</h2></section><section *ngIf="!loading && errorMessage" class="state-card"><h2>Historique indisponible</h2><p>{{ errorMessage }}</p><a class="primary-button" routerLink="/users">Retour aux adhérents</a></section>
+  <section *ngIf="!loading && !errorMessage && (!borrow || borrow.length === 0)" class="state-card"><img src="assets/ui/empty-shelf.png" alt="Aucun emprunt"><h2>Aucun emprunt</h2><p>Cet adhérent n’a pas encore emprunté de livre.</p></section>
+  <section *ngIf="!loading && !errorMessage && borrow && borrow.length > 0" class="surface-card"><div class="section-heading"><div><h2>{{ borrow.length }} emprunt{{ borrow.length > 1 ? 's' : '' }}</h2><p>Activité complète de cet adhérent.</p></div></div><div class="table-shell"><table class="data-table responsive-table"><thead><tr><th>Livre</th><th>Date d’emprunt</th><th>Date de retour</th><th>État</th></tr></thead><tbody><tr *ngFor="let borrower of borrow"><td data-label="Livre">#{{ borrower.bookId }}</td><td data-label="Emprunt">{{ borrower.issueDate | date:'dd/MM/yyyy' }}</td><td data-label="Retour">{{ borrower.returnDate ? (borrower.returnDate | date:'dd/MM/yyyy') : '—' }}</td><td data-label="État"><span class="badge-pill" [class.badge-pill--success]="borrower.returnDate !== null">{{ borrower.returnDate ? 'Rendu' : 'En cours' }}</span></td></tr></tbody></table></div></section>
+</div>

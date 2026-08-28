@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UpdateUserComponent } from './update-user.component';
+import { APP_TEST_IMPORTS } from '../testing/app-test-imports';
 
 describe('UpdateUserComponent', () => {
   let component: UpdateUserComponent;
@@ -8,7 +9,7 @@ describe('UpdateUserComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UpdateUserComponent ]
+      imports: APP_TEST_IMPORTS
     })
     .compileComponents();
 

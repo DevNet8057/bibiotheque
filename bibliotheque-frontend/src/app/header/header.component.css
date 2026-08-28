@@ -1,4 +1,25 @@
-.right-text {
-    margin-left: 1000px;
-    font-size: 17px;
+:host { display: block; }
+.sidebar { position: fixed; z-index: 100; inset: 0 auto 0 0; display: flex; width: 264px; flex-direction: column; padding: 20px 16px 14px; border-right: 1px solid rgba(165,180,252,.12); background: #0d1238; overflow-y: auto; }
+.brand-card, .profile-card { display: flex; align-items: center; gap: 12px; border: 1px solid rgba(126,140,220,.25); border-radius: 24px; color: white; background: #141b48; box-shadow: 0 18px 32px rgba(2,5,22,.5), inset 0 1px rgba(255,255,255,.08); }
+.brand-card { min-height: 74px; padding: 12px; text-decoration: none; }
+.brand-card__icon { display: grid; width: 44px; height: 44px; place-items: center; border-radius: 16px; background: linear-gradient(180deg,#8b7cff,#4a3ac9); box-shadow: 0 6px 0 #2d2183,0 0 22px rgba(139,124,255,.7); }
+.brand-card b { display: block; font: 800 1.25rem/1.1 'Baloo 2',sans-serif; letter-spacing: .04em; }
+.brand-card small { display: block; color: #fbbf24; font: 800 .72rem 'Baloo 2',sans-serif; }
+.main-nav { display: grid; gap: 6px; margin-top: 22px; }
+.main-nav a, .nav-disabled { position: relative; display: flex; min-height: 47px; align-items: center; gap: 13px; border-radius: 16px; padding: 11px 14px; color: rgba(199,210,254,.8); font-weight: 800; text-decoration: none; transition: 160ms ease; }
+.main-nav img, .nav-disabled img { width: 20px; height: 20px; flex: 0 0 20px; opacity: .9; }
+.main-nav a:hover { color: white; background: rgba(116,99,244,.12); }
+.main-nav a.active { color: white; background: linear-gradient(180deg,#7b6bff,#4a3ac9); box-shadow: 0 6px 0 #2d2183,0 0 24px rgba(123,107,255,.5); }
+.nav-disabled { opacity: .48; }.nav-disabled small { margin-left: auto; font-size: .58rem; text-transform: uppercase; }
+.sidebar-illustration { width: 120px; height: 160px; margin: auto auto 14px; border-radius: 18px; object-fit: cover; object-position: center 42%; }
+.profile-card { min-height: 70px; padding: 11px; }.profile-card__avatar { display: grid; width: 44px; height: 44px; flex: 0 0 44px; place-items: center; border-radius: 15px; color: #121637; background: linear-gradient(180deg,#fbbf24,#d97706); box-shadow: 0 5px 0 #92400e; font: 800 1.1rem 'Baloo 2',sans-serif; }
+.profile-card__copy { min-width: 0; flex: 1; }.profile-card__copy b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }.profile-card__copy small { display: flex; align-items: center; gap: 6px; color: #6ee7b7; font-size: .65rem; }.profile-card__copy i { width: 6px; height: 6px; border-radius: 50%; background: #34d399; }
+.profile-card button { width: 28px; height: 32px; border: 0; border-radius: 10px; color: #c7d2fe; background: rgba(255,255,255,.05); }.login-link { margin-top: auto; border-radius: 14px; padding: 12px; color: white; background: #6d5ef0; text-align: center; text-decoration: none; font-weight: 800; }
+.mobile-bar, .drawer-overlay { display: none; }
+@media (max-height: 720px) { .sidebar-illustration { display: none; } .profile-card { margin-top: auto; } }
+@media (max-width: 900px) {
+  .mobile-bar { position: fixed; z-index: 120; inset: 0 0 auto; display: flex; height: 72px; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid rgba(165,180,252,.14); background: rgba(13,18,56,.96); backdrop-filter: blur(14px); }
+  .mobile-brand { display: flex; align-items: center; gap: 9px; color: white; text-decoration: none; }.mobile-brand > span { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 14px; background: linear-gradient(180deg,#8b7cff,#4a3ac9); box-shadow: 0 4px 0 #2d2183; }.mobile-brand b { font: 800 1.05rem 'Baloo 2',sans-serif; letter-spacing: .04em; }.mobile-brand small { margin-left: 4px; color: #fbbf24; }
+  .menu-toggle { display: grid; width: 44px; height: 44px; place-content: center; gap: 5px; border: 1px solid rgba(165,180,252,.2); border-radius: 14px; background: #1a2258; }.menu-toggle span { width: 20px; height: 2px; border-radius: 2px; background: white; }
+  .sidebar { width: min(86vw, 310px); transform: translateX(-105%); transition: transform 220ms ease; box-shadow: 24px 0 60px rgba(0,0,0,.45); }.sidebar--open { transform: translateX(0); }.drawer-overlay { position: fixed; z-index: 90; inset: 0; display: block; border: 0; background: rgba(3,5,24,.7); backdrop-filter: blur(3px); }
 }

@@ -11,18 +11,25 @@ import { UsersService } from '../_service/users.service';
 export class RegistrationComponent implements OnInit {
 
   user: Users = new Users();
+  saving = false;
+  errorMessage = '';
+  successMessage = '';
   constructor(private usersService: UsersService,
     private router: Router) { }
 
   ngOnInit(): void {
+    this.user.role = [{ roleName: 'User' }];
   }
 
   saveUser() {
+    this.saving = true;
+    this.errorMessage = '';
     this.usersService.createUser(this.user).subscribe(data => {
-      console.log(data);
-      this.goToUsersList();
+      this.saving = false;
+      this.successMessage = 'L’adhérent a été créé avec succès.';
+      setTimeout(() => this.goToUsersList(), 700);
     },
-    error => console.log(error));
+    () => { this.saving = false; this.errorMessage = 'Le compte n’a pas pu être créé. Vérifiez que l’identifiant n’est pas déjà utilisé.'; });
   }
 
   goToUsersList() {
@@ -30,7 +37,6 @@ export class RegistrationComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.user);
     this.saveUser();
   }
 

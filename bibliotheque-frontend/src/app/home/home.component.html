@@ -1,3 +1,21 @@
-<div class="container">
-    <p class="home">Welcome to Online Library System</p>
+<div class="app-page dashboard-page">
+  <header class="page-hero">
+    <div class="page-hero__copy"><h1>Tableau de bord</h1><p>Vue d’ensemble de l’activité de la bibliothèque</p></div>
+    <div class="hero-actions"><span class="hero-icon"><img src="assets/ui/bell.svg" alt="Notifications"></span><span class="hero-avatar">🧑‍🏫</span></div>
+  </header>
+
+  <section *ngIf="loading" class="state-card"><span class="loading-orbit"></span><h2>Préparation du tableau de bord</h2><p>Nous récupérons les dernières informations de la bibliothèque.</p></section>
+  <section *ngIf="!loading && errorMessage" class="state-card"><span class="state-symbol">!</span><h2>Le tableau de bord est indisponible</h2><p>{{ errorMessage }}</p><button class="primary-button" type="button" (click)="loadDashboard()">Réessayer</button></section>
+
+  <ng-container *ngIf="!loading && !errorMessage">
+    <div class="metric-grid">
+      <a class="metric-card metric-card--purple" routerLink="/reservations"><span class="metric-icon"><img src="assets/ui/reservations.svg" alt=""></span><span><strong>{{ reservations.length }}</strong><small>Réservations</small></span><b>→</b></a>
+      <a class="metric-card metric-card--green" routerLink="/books"><span class="metric-icon"><img src="assets/ui/books.svg" alt=""></span><span><strong>{{ books.length }}</strong><small>Livres au catalogue</small></span><b>→</b></a>
+      <a class="metric-card metric-card--orange" routerLink="/users"><span class="metric-icon"><img src="assets/ui/users.svg" alt=""></span><span><strong>{{ users.length }}</strong><small>Adhérents inscrits</small></span><b>→</b></a>
+    </div>
+    <div class="dashboard-grid">
+      <section class="surface-card stats-card"><h2>Statistiques</h2><div class="stats-layout"><div class="donut"><span><b>{{ reservations.length }}</b><small>total</small></span></div><div class="status-list"><div *ngFor="let status of statuses" [attr.data-status]="status"><i></i><span>{{ status }}</span><strong>{{ count(status) }}</strong></div></div></div><p class="stats-total">Total : <strong>{{ reservations.length }}</strong> réservation{{ reservations.length > 1 ? 's' : '' }} enregistrée{{ reservations.length > 1 ? 's' : '' }}</p></section>
+      <aside class="tip-card"><span>💡</span><div><h2>Le saviez-vous ?</h2><p>Une réservation non retirée avant sa date d’expiration passe automatiquement au statut EXPIREE.</p></div></aside>
+    </div>
+  </ng-container>
 </div>

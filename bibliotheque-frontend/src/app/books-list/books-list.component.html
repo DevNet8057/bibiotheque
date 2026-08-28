@@ -1,27 +1,12 @@
-<h2>Book List</h2>
-<table class="table table-success table-striped">
-    <thead>
-        <tr>
-            <th> Book ID </th>
-            <th> Name </th>
-            <th> Author </th>
-            <th> Genre </th>
-            <th> Number of copies available </th>
-            <th> Actions </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let book of books">
-            <td> {{ book.bookId }} </td>
-            <td> {{ book.bookName }} </td>
-            <td> {{ book.bookAuthor }} </td>
-            <td> {{ book.bookGenre }} </td>
-            <td> {{ book.noOfCopies }} </td>
-            <td>
-                <button (click) = "bookDetails(book.bookId)" class="btn btn-success"> View </button>
-                <button (click) = "updateBook(book.bookId)" class="btn btn-info"  style="margin-left: 10px"> Edit </button>
-                <button (click) = "deleteBook(book.bookId)" class="btn btn-danger" style="margin-left: 10px"> Delete </button>                
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="app-page">
+  <header class="page-hero"><div class="page-hero__copy"><h1>Livres</h1><p>Catalogue complet de la bibliothèque</p></div><div class="hero-actions"><a class="primary-button" routerLink="/create-book">+ Ajouter un livre</a><span class="hero-icon"><img src="assets/ui/bell.svg" alt="Notifications"></span></div></header>
+  <p *ngIf="feedbackMessage" class="alert-message" role="status">✓ {{ feedbackMessage }}</p>
+  <section *ngIf="loading" class="state-card"><span class="loading-orbit"></span><h2>Chargement du catalogue</h2><p>Les livres arrivent dans un instant.</p></section>
+  <section *ngIf="!loading && errorMessage" class="state-card"><span class="error-symbol">!</span><h2>Le catalogue est indisponible</h2><p>{{ errorMessage }}</p><button class="primary-button" type="button" (click)="loadBooks()">Réessayer</button></section>
+  <section *ngIf="!loading && !errorMessage && books.length === 0" class="state-card"><img src="assets/ui/empty-shelf.png" alt="Étagère vide"><h2>Aucun livre</h2><p>Aucun livre n’est encore enregistré dans le catalogue.</p><a class="primary-button" routerLink="/create-book">Ajouter le premier livre</a></section>
+  <section *ngIf="!loading && !errorMessage && books.length > 0" class="surface-card">
+    <div class="section-heading"><div><h2>{{ books.length }} livre{{ books.length > 1 ? 's' : '' }}</h2><p>Consultez et gérez les ouvrages disponibles.</p></div></div>
+    <div class="table-shell"><table class="data-table responsive-table"><thead><tr><th>ID</th><th>Titre</th><th>Auteur</th><th>Genre</th><th>Exemplaires</th><th>Actions</th></tr></thead><tbody><tr *ngFor="let book of books"><td data-label="ID">#{{ book.bookId }}</td><td data-label="Titre"><strong>{{ book.bookName }}</strong></td><td data-label="Auteur">{{ book.bookAuthor }}</td><td data-label="Genre"><span class="badge-pill">{{ book.bookGenre }}</span></td><td data-label="Exemplaires"><span class="badge-pill" [class.badge-pill--success]="book.noOfCopies > 0">{{ book.noOfCopies }}</span></td><td data-label="Actions"><div class="table-actions"><button class="table-action" type="button" (click)="bookDetails(book.bookId)">Historique</button><button class="table-action" type="button" (click)="updateBook(book.bookId)">Modifier</button><button class="table-action table-action--danger" type="button" (click)="askDelete(book)">Supprimer</button></div></td></tr></tbody></table></div>
+  </section>
+</div>
+<div *ngIf="pendingDelete" class="modal-layer" (click)="closeDelete()"><section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="delete-book-title" (click)="$event.stopPropagation()"><h2 id="delete-book-title">Supprimer ce livre ?</h2><p>« {{ pendingDelete.bookName }} » sera retiré du catalogue. Cette action est définitive.</p><div class="modal-actions"><button class="secondary-button" type="button" (click)="closeDelete()">Conserver</button><button class="danger-button" type="button" (click)="confirmDelete()">Supprimer</button></div></section></div>

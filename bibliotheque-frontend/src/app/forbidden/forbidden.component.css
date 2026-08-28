@@ -1,4 +1,1 @@
-.forbidden {
-    margin-top: 200px;
-    font-size: 50px;
-}
+.forbidden-page{display:grid;min-height:100vh;place-items:center;padding:20px;background:radial-gradient(circle at 50% 20%,rgba(116,99,244,.2),transparent 30rem),#070b2b}.forbidden-card{width:min(100%,620px);padding:clamp(28px,6vw,58px);border:1px solid rgba(126,140,220,.24);border-radius:32px;background:#141b48;box-shadow:0 30px 70px rgba(0,0,0,.45);text-align:center}.forbidden-card>span{display:grid;width:76px;height:76px;place-items:center;margin:0 auto 18px;border-radius:24px;background:linear-gradient(180deg,#fde68a,#f59e0b);box-shadow:0 7px 0 #b45309;font-size:2rem}.forbidden-card small{color:#fbbf24;font-weight:800;text-transform:uppercase;letter-spacing:.12em}.forbidden-card h1{margin:8px 0;font:800 clamp(2rem,6vw,3rem)/1 'Baloo 2',sans-serif}.forbidden-card p{margin:0 auto 26px;color:#aeb9e8;line-height:1.6}.forbidden-card>div{display:flex;justify-content:center;gap:10px}@media(max-width:560px){.forbidden-card>div{flex-direction:column}.forbidden-card a{width:100%}}

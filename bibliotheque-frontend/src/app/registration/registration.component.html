@@ -1,27 +1,4 @@
-<div class="container col-md-6 offset-mid-3">
-    <h3 class="text-center"> Add User </h3>
-    <form (ngSubmit) = "onSubmit()" autocomplete="off">
-
-        <div class="form-group">
-            <label style="margin-bottom: 10px"> Name </label>
-            <input type="text" class="form-control" style="margin-bottom: 10px" id="name" [(ngModel)] = "user.name" name="name">
-        </div>
-
-        <div class="form-group">
-            <label style="margin-bottom: 10px"> Username </label>
-            <input type="text" class="form-control" style="margin-bottom: 10px" id="username" [(ngModel)] = "user.username" name="username">
-        </div>
-
-        <div class="form-group">
-            <label style="margin-bottom: 10px"> Password </label>
-            <input type="password" class="form-control" style="margin-bottom: 10px" id="password" [(ngModel)] = "user.password" name="password">
-        </div>
-
-        <div class="form-group">
-            <label style="margin-bottom: 10px"> Role (Admin, User) </label>
-            <input type="text" class="form-control" style="margin-bottom: 10px" id="role" [(ngModel)] = "user.role[0].roleName" name="role">
-        </div>
-
-        <button class="btn btn-success" type="submit"> Submit </button>
-    </form>
+<div class="app-page form-page"><header class="page-hero"><div class="page-hero__copy"><h1>Nouvel adhérent</h1><p>Créez un accès à la bibliothèque</p></div><span class="user-hero-icon">🧑</span></header>
+  <p *ngIf="successMessage" class="alert-message" role="status">✓ {{ successMessage }}</p><p *ngIf="errorMessage" class="alert-message alert-message--error" role="alert">{{ errorMessage }}</p>
+  <section class="form-card"><div class="section-heading"><div><h2>Informations du compte</h2><p>Communiquez ensuite l’identifiant à l’adhérent.</p></div></div><form class="app-form" #userForm="ngForm" (ngSubmit)="onSubmit()" autocomplete="off"><div class="form-grid"><div class="form-field"><label for="name">Nom complet</label><input class="form-control-dark" type="text" id="name" [(ngModel)]="user.name" name="name" placeholder="Prénom et nom" required></div><div class="form-field"><label for="username">Identifiant</label><input class="form-control-dark" type="text" id="username" [(ngModel)]="user.username" name="username" placeholder="Identifiant de connexion" required></div><div class="form-field"><label for="password">Mot de passe temporaire</label><input class="form-control-dark" type="password" id="password" [(ngModel)]="user.password" name="password" minlength="6" required><small>Utilisez au moins 6 caractères.</small></div><div class="form-field"><label for="role">Rôle</label><select class="form-control-dark" id="role" [(ngModel)]="user.role[0].roleName" name="role" required><option value="User">Adhérent</option><option value="Admin">Bibliothécaire</option></select></div></div><div class="form-actions"><a class="secondary-button" routerLink="/users">Annuler</a><button class="primary-button" type="submit" [disabled]="userForm.invalid || saving">{{ saving ? 'Création...' : 'Créer le compte' }}</button></div></form></section>
 </div>

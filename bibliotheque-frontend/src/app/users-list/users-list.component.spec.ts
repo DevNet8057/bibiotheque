@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UsersListComponent } from './users-list.component';
+import { APP_TEST_IMPORTS } from '../testing/app-test-imports';
 
 describe('UsersListComponent', () => {
   let component: UsersListComponent;
@@ -8,7 +9,7 @@ describe('UsersListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UsersListComponent ]
+      imports: APP_TEST_IMPORTS
     })
     .compileComponents();
 

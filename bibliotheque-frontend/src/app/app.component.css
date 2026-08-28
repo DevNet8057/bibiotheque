@@ -1,0 +1,5 @@
+:host { display: block; min-height: 100vh; }
+.app-main { min-height: 100vh; margin-left: 264px; padding: 20px clamp(20px, 4vw, 78px); }
+.standalone-main { min-height: 100vh; }
+@media (max-width: 900px) { .app-main { margin-left: 0; padding: 88px 16px 24px; } }
+@media (max-width: 420px) { .app-main { padding-inline: 12px; } }

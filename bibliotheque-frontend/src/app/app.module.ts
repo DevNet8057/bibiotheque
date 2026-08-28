@@ -24,6 +24,10 @@ import { AuthInterceptor } from './_auth/auth.interceptor';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { BorrowBookComponent } from './borrow-book/borrow-book.component';
 import { ReturnBookComponent } from './return-book/return-book.component';
+import { ReservationPageComponent } from './reservation/reservation-page.component';
+import { ReservationFormComponent } from './reservation/reservation-form.component';
+import { ReservationListComponent } from './reservation/reservation-list.component';
+import { FilterStatusPipe } from './reservation/filter-status.pipe';
 
 @NgModule({
   declarations: [
@@ -43,6 +47,10 @@ import { ReturnBookComponent } from './return-book/return-book.component';
     ForbiddenComponent,
     BorrowBookComponent,
     ReturnBookComponent,
+    ReservationPageComponent,
+    ReservationFormComponent,
+    ReservationListComponent,
+    FilterStatusPipe,
   ],
   imports: [
     BrowserModule,

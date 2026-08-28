@@ -1,25 +1,6 @@
-<h2>List of available books in the library</h2>
-<table class="table table-success table-striped">
-    <thead>
-        <tr>
-            <th> Book ID </th>
-            <th> Name </th>
-            <th> Author </th>
-            <th> Genre </th>
-            <th> Number of copies available </th>
-            <th> Actions </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let book of books">
-            <td> {{ book.bookId }} </td>
-            <td> {{ book.bookName }} </td>
-            <td> {{ book.bookAuthor }} </td>
-            <td> {{ book.bookGenre }} </td>
-            <td> {{ book.noOfCopies }} </td>
-            <td>
-                <button (click) = "borrowBook(book.bookId)" class="btn btn-success"> Borrow </button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="app-page"><header class="page-hero"><div class="page-hero__copy"><h1>Emprunter un livre</h1><p>Choisissez un ouvrage disponible dans le catalogue</p></div><span class="action-hero-icon">📚</span></header>
+  <p *ngIf="feedbackMessage" class="alert-message" role="status">✓ {{ feedbackMessage }}</p><p *ngIf="errorMessage && !loading" class="alert-message alert-message--error" role="alert">{{ errorMessage }}</p>
+  <section *ngIf="loading" class="state-card"><span class="loading-orbit"></span><h2>Chargement des livres</h2></section><section *ngIf="!loading && errorMessage && books.length === 0" class="state-card"><h2>Catalogue indisponible</h2><p>{{ errorMessage }}</p><button class="primary-button" type="button" (click)="loadBooks()">Réessayer</button></section>
+  <section *ngIf="!loading && !errorMessage && books.length === 0" class="state-card"><img src="assets/ui/empty-shelf.png" alt="Étagère vide"><h2>Aucun livre disponible</h2><p>Revenez plus tard pour découvrir les prochains retours.</p></section>
+  <section *ngIf="!loading && books.length > 0" class="surface-card"><div class="section-heading"><div><h2>Catalogue</h2><p>{{ books.length }} ouvrage{{ books.length > 1 ? 's' : '' }} au total</p></div></div><div class="table-shell"><table class="data-table responsive-table"><thead><tr><th>Livre</th><th>Auteur</th><th>Genre</th><th>Disponibles</th><th>Action</th></tr></thead><tbody><tr *ngFor="let book of books"><td data-label="Livre"><strong>{{ book.bookName }}</strong></td><td data-label="Auteur">{{ book.bookAuthor }}</td><td data-label="Genre"><span class="badge-pill">{{ book.bookGenre }}</span></td><td data-label="Disponibles"><span class="badge-pill" [class.badge-pill--success]="book.noOfCopies > 0">{{ book.noOfCopies }}</span></td><td data-label="Action"><button class="primary-button borrow-action" type="button" [disabled]="book.noOfCopies < 1 || borrowingId !== null" (click)="borrowBook(book.bookId)">{{ borrowingId === book.bookId ? 'Emprunt...' : (book.noOfCopies > 0 ? 'Emprunter' : 'Indisponible') }}</button></td></tr></tbody></table></div></section>
+</div>

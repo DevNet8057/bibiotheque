@@ -1,25 +1,6 @@
-<h2>List of books to be returned</h2>
-<table class="table table-success table-striped">
-    <thead>
-        <tr>
-            <th> Book ID </th>
-            <th> Issue Date </th>
-            <th> Return Date </th>
-            <th> Overdue Date </th>
-            <th> Action </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let b of borrow">
-            <td> {{ b.bookId }} </td>
-            <td> {{ b.issueDate }} </td>
-            <td> {{ b.returnDate }} </td>
-            <td> {{ b.dueDate }} </td>
-            <td>
-                <div *ngIf="b.returnDate === null">
-                    <button (click) = "returnBook(b.borrowId)" class="btn btn-success"> Return </button>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="app-page"><header class="page-hero"><div class="page-hero__copy"><h1>Retour des livres</h1><p>Consultez vos emprunts et enregistrez un retour</p></div><span class="action-hero-icon">↩</span></header>
+  <p *ngIf="feedbackMessage" class="alert-message" role="status">✓ {{ feedbackMessage }}</p><p *ngIf="errorMessage && !loading" class="alert-message alert-message--error" role="alert">{{ errorMessage }}</p>
+  <section *ngIf="loading" class="state-card"><span class="loading-orbit"></span><h2>Chargement de vos emprunts</h2></section><section *ngIf="!loading && errorMessage && borrow.length === 0" class="state-card"><h2>Emprunts indisponibles</h2><p>{{ errorMessage }}</p><button class="primary-button" type="button" (click)="loadBorrowedBooks()">Réessayer</button></section>
+  <section *ngIf="!loading && !errorMessage && borrow.length === 0" class="state-card"><img src="assets/ui/empty-shelf.png" alt="Aucun livre emprunté"><h2>Aucun retour attendu</h2><p>Vous n’avez aucun emprunt enregistré pour le moment.</p><a class="primary-button" routerLink="/borrow-book">Voir les livres</a></section>
+  <section *ngIf="!loading && borrow.length > 0" class="surface-card"><div class="section-heading"><div><h2>Mes emprunts</h2><p>{{ borrow.length }} opération{{ borrow.length > 1 ? 's' : '' }} enregistrée{{ borrow.length > 1 ? 's' : '' }}</p></div></div><div class="table-shell"><table class="data-table responsive-table"><thead><tr><th>Livre</th><th>Emprunt</th><th>Échéance</th><th>Retour</th><th>Action</th></tr></thead><tbody><tr *ngFor="let b of borrow"><td data-label="Livre">#{{ b.bookId }}</td><td data-label="Emprunt">{{ b.issueDate | date:'dd/MM/yyyy' }}</td><td data-label="Échéance">{{ b.dueDate | date:'dd/MM/yyyy' }}</td><td data-label="Retour">{{ b.returnDate ? (b.returnDate | date:'dd/MM/yyyy') : 'En cours' }}</td><td data-label="Action"><button *ngIf="b.returnDate === null" class="primary-button return-action" type="button" [disabled]="returningId !== null" (click)="returnBook(b.borrowId)">{{ returningId === b.borrowId ? 'Enregistrement...' : 'Rendre le livre' }}</button><span *ngIf="b.returnDate !== null" class="badge-pill badge-pill--success">Rendu</span></td></tr></tbody></table></div></section>
+</div>

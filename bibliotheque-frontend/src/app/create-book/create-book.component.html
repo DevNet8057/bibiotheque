@@ -1,27 +1,7 @@
-<div class="container col-md-6 offset-mid-3">
-    <h3 class="text-center"> Add Book </h3>
-    <form (ngSubmit) = "onSubmit()" autocomplete="off">
-
-        <div class="form-group">
-            <label style="margin-bottom: 10px"> Book Name </label>
-            <input type="text" class="form-control" style="margin-bottom: 10px" id="bookName" [(ngModel)] = "book.bookName" name="bookName">
-        </div>
-
-        <div class="form-group">
-            <label style="margin-bottom: 10px"> Author </label>
-            <input type="text" class="form-control" style="margin-bottom: 10px" id="bookAuthor" [(ngModel)] = "book.bookAuthor" name="bookAuthor">
-        </div>
-
-        <div class="form-group">
-            <label style="margin-bottom: 10px"> Genre </label>
-            <input type="text" class="form-control" style="margin-bottom: 10px" id="bookGenre" [(ngModel)] = "book.bookGenre" name="bookGenre">
-        </div>
-
-        <div class="form-group">
-            <label style="margin-bottom: 10px"> Number of Copies </label>
-            <input type="text" class="form-control" style="margin-bottom: 10px" id="noOfCopies" [(ngModel)] = "book.noOfCopies" name="noOfCopies">
-        </div>
-
-        <button class="btn btn-success" type="submit"> Submit </button>
-    </form>
+<div class="app-page form-page">
+  <header class="page-hero"><div class="page-hero__copy"><h1>Ajouter un livre</h1><p>Enrichissez le catalogue de la bibliothèque</p></div><span class="book-hero-icon">📕</span></header>
+  <p *ngIf="successMessage" class="alert-message" role="status">✓ {{ successMessage }}</p><p *ngIf="errorMessage" class="alert-message alert-message--error" role="alert">{{ errorMessage }}</p>
+  <section class="form-card"><div class="section-heading"><div><h2>Informations du livre</h2><p>Tous les champs sont obligatoires.</p></div></div>
+    <form class="app-form" #bookForm="ngForm" (ngSubmit)="onSubmit()" autocomplete="off"><div class="form-grid"><div class="form-field form-field--full"><label for="bookName">Titre</label><input class="form-control-dark" type="text" id="bookName" [(ngModel)]="book.bookName" name="bookName" placeholder="Ex. Une si longue lettre" required></div><div class="form-field"><label for="bookAuthor">Auteur</label><input class="form-control-dark" type="text" id="bookAuthor" [(ngModel)]="book.bookAuthor" name="bookAuthor" placeholder="Nom de l’auteur" required></div><div class="form-field"><label for="bookGenre">Genre</label><input class="form-control-dark" type="text" id="bookGenre" [(ngModel)]="book.bookGenre" name="bookGenre" placeholder="Roman, science, histoire…" required></div><div class="form-field form-field--full"><label for="noOfCopies">Nombre d’exemplaires</label><input class="form-control-dark" type="number" min="0" id="noOfCopies" [(ngModel)]="book.noOfCopies" name="noOfCopies" required><small>Indiquez le nombre actuellement disponible.</small></div></div><div class="form-actions"><a class="secondary-button" routerLink="/books">Annuler</a><button class="primary-button" type="submit" [disabled]="bookForm.invalid || saving">{{ saving ? 'Enregistrement...' : 'Ajouter au catalogue' }}</button></div></form>
+  </section>
 </div>

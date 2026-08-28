@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReturnBookComponent } from './return-book.component';
+import { APP_TEST_IMPORTS } from '../testing/app-test-imports';
 
 describe('ReturnBookComponent', () => {
   let component: ReturnBookComponent;
@@ -8,7 +9,7 @@ describe('ReturnBookComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReturnBookComponent ]
+      imports: APP_TEST_IMPORTS
     })
     .compileComponents();
 

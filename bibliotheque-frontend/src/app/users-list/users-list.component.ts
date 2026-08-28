@@ -10,26 +10,26 @@ import { UsersService } from '../_service/users.service';
 })
 export class UsersListComponent implements OnInit {
 
-  users: Users[];
+  users: Users[] = [];
+  loading = true;
+  errorMessage = '';
 
   constructor(private usersService: UsersService,
     private router: Router) { }
 
   ngOnInit(): void {
-    this.getUsers();
-    // this.users = [{
-    //   "userId": 1,
-    //   "name": "tarun",
-    //   "username": "tarungowda",
-    //   "role": "STUDENT",
-    //   "password": "sdklfjlakdsf"
-    // }]
+    this.loadUsers();
   }
 
-  private getUsers() {
+  loadUsers(): void {
+    this.loading = true;
+    this.errorMessage = '';
     this.usersService.getUsersList().subscribe(data =>{
       this.users = data;
-      console.log(this.users);
+      this.loading = false;
+    }, () => {
+      this.loading = false;
+      this.errorMessage = 'Nous ne pouvons pas charger les adhérents. Vérifiez que le serveur est démarré, puis réessayez.';
     });
   }
 
@@ -40,5 +40,7 @@ export class UsersListComponent implements OnInit {
   updateUser(userId: number) {
     this.router.navigate(['update-user', userId ]);
   }
+
+  roleName(user: Users): string { return user.role && user.role.length ? user.role[0].roleName : 'Non défini'; }
 
 }

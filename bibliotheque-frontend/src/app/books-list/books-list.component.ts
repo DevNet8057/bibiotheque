@@ -9,19 +9,28 @@ import { BooksService } from '../_service/books.service';
   styleUrls: ['./books-list.component.css']
 })
 export class BooksListComponent implements OnInit {
-
-  books: Books[];
+  books: Books[] = [];
+  loading = true;
+  errorMessage = '';
+  feedbackMessage = '';
+  pendingDelete: Books | null = null;
 
   constructor(private booksService: BooksService,
     private router: Router) { }
 
   ngOnInit(): void {
-    this.getBooks();
+    this.loadBooks();
   }
 
-  private getBooks() {
+  loadBooks(): void {
+    this.loading = true;
+    this.errorMessage = '';
     this.booksService.getBooksList().subscribe(data =>{
       this.books = data;
+      this.loading = false;
+    }, () => {
+      this.loading = false;
+      this.errorMessage = 'Nous ne pouvons pas charger les livres. Vérifiez que le serveur est démarré, puis réessayez.';
     });
   }
 
@@ -29,10 +38,16 @@ export class BooksListComponent implements OnInit {
     this.router.navigate(['update-book', bookId ]);
   }
 
-  deleteBook(bookId: number) {
-    this.booksService.deleteBook(bookId).subscribe( data=> {
-      this.getBooks();
-    });
+  askDelete(book: Books): void { this.pendingDelete = book; }
+  closeDelete(): void { this.pendingDelete = null; }
+  confirmDelete(): void {
+    if (!this.pendingDelete) { return; }
+    const bookId = this.pendingDelete.bookId;
+    this.pendingDelete = null;
+    this.booksService.deleteBook(bookId).subscribe(() => {
+      this.feedbackMessage = 'Le livre a été supprimé avec succès.';
+      this.loadBooks();
+    }, () => this.errorMessage = 'Le livre n’a pas pu être supprimé. Il est peut-être lié à un emprunt en cours.');
   }
 
   bookDetails(bookId: number) {

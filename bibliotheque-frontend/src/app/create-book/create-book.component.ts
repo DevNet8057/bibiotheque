@@ -11,6 +11,9 @@ import { BooksService } from '../_service/books.service';
 export class CreateBookComponent implements OnInit {
 
   book: Books = new Books();
+  saving = false;
+  errorMessage = '';
+  successMessage = '';
   constructor(private booksService: BooksService,
     private router: Router) { }
 
@@ -18,11 +21,14 @@ export class CreateBookComponent implements OnInit {
   }
 
   saveBook() {
+    this.saving = true;
+    this.errorMessage = '';
     this.booksService.createBook(this.book).subscribe(data => {
-      console.log(data);
-      this.goToBooksList();
+      this.saving = false;
+      this.successMessage = 'Le livre a été ajouté au catalogue.';
+      setTimeout(() => this.goToBooksList(), 700);
     },
-    error => console.log(error));
+    () => { this.saving = false; this.errorMessage = 'Le livre n’a pas pu être ajouté. Vérifiez les informations puis réessayez.'; });
   }
 
   goToBooksList() {
@@ -30,7 +36,6 @@ export class CreateBookComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.book);
     this.saveBook();
   }
 

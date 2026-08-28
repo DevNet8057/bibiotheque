@@ -18,6 +18,8 @@ export class BookDetailsComponent implements OnInit {
   book: Books;
   borrow: Borrow[];
   user: Users;
+  loading = true;
+  errorMessage = '';
 
   constructor(private route: ActivatedRoute,
     private bookService: BooksService,
@@ -31,8 +33,7 @@ export class BookDetailsComponent implements OnInit {
     this.book = new Books();
     this.bookService.getBookById(this.id).subscribe( data => {
       this.book = data;
-      console.log(data);
-    })
+    }, () => { this.loading = false; this.errorMessage = 'Ce livre est introuvable.'; });
 
     this.getBorrowHistory(this.id);
     
@@ -41,8 +42,8 @@ export class BookDetailsComponent implements OnInit {
   private getBorrowHistory(bookId: number) {
     this.borrowService.getBookBorrowHistory(bookId).subscribe(data => {
       this.borrow = data;
-      console.log(data);
-    });
+      this.loading = false;
+    }, () => { this.loading = false; this.errorMessage = 'L’historique de ce livre ne peut pas être chargé pour le moment.'; });
   }
 
   public getUserData(userId: number):string {

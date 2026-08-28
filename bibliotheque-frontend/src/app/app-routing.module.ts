@@ -14,11 +14,12 @@ import { UpdateUserComponent } from './update-user/update-user.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { UsersListComponent } from './users-list/users-list.component';
 import { AuthGuard } from './_auth/auth.guard';
+import { ReservationPageComponent } from './reservation/reservation-page.component';
 
 const routes: Routes = [
   {path: 'books', component: BooksListComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
   {path: 'create-book', component: CreateBookComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
-  {path: '', component: HomeComponent},
+  {path: '', component: HomeComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
   {path: 'update-book/:bookId', component: UpdateBookComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
   {path: 'book-details/:bookId', component: BookDetailsComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
   {path: 'users', component: UsersListComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
@@ -28,7 +29,9 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'forbidden', component: ForbiddenComponent},
   {path: 'borrow-book', component: BorrowBookComponent, canActivate:[AuthGuard], data:{roles:['User']}},
-  {path: 'return-book', component: ReturnBookComponent, canActivate:[AuthGuard], data:{roles:['User']}}
+  {path: 'return-book', component: ReturnBookComponent, canActivate:[AuthGuard], data:{roles:['User']}},
+  {path: 'reservations', component: ReservationPageComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
+  {path: '**', redirectTo: ''}
 ];
 
 @NgModule({

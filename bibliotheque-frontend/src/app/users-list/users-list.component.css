@@ -1,0 +1,2 @@
+.error-symbol { display: grid; width: 52px; height: 52px; place-items: center; border-radius: 17px; color: #7f1d1d; background: linear-gradient(180deg,#fecaca,#f87171); box-shadow: 0 5px 0 #991b1b; font: 900 1.5rem 'Baloo 2',sans-serif; }
+@media(max-width:650px){.hero-actions .hero-icon{display:none}.hero-actions .primary-button{padding-inline:12px;font-size:.76rem}}

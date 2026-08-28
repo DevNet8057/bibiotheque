@@ -10,6 +10,8 @@ import { UsersService } from '../_service/users.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  loading = false;
+  errorMessage = '';
 
   constructor(private userService: UsersService,
     private userAuthSerivce: UserAuthService,
@@ -20,6 +22,9 @@ export class LoginComponent implements OnInit {
   }
 
   login(loginForm: NgForm) {
+    if (loginForm.invalid || this.loading) { return; }
+    this.loading = true;
+    this.errorMessage = '';
     this.userService.login(loginForm.value).subscribe(
       (response: any)=>{
         this.userAuthSerivce.setRoles(response.user.role);
@@ -27,15 +32,15 @@ export class LoginComponent implements OnInit {
         this.userAuthSerivce.setUserId(response.user.userId);
         this.userAuthSerivce.setName(response.user.name);
 
+        this.loading = false;
         const role = response.user.role[0].roleName;
-        if(role === 'Admin') {
-          this.router.navigate(['/books']);
-        } else {
-          this.router.navigate(['/borrow-book']) //update later
-        }
+        this.router.navigate(role === 'Admin' ? ['/'] : ['/borrow-book']);
       },
       (error)=>{
-        console.log(error);
+        this.loading = false;
+        this.errorMessage = error.status === 0
+          ? 'Le service de la bibliothèque est momentanément injoignable. Vérifiez votre connexion puis réessayez.'
+          : 'Identifiant ou mot de passe incorrect. Vérifiez vos informations puis réessayez.';
       }
     );
   }

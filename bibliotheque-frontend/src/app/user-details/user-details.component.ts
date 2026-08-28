@@ -18,6 +18,8 @@ export class UserDetailsComponent implements OnInit {
   book: Books;
   borrow: Borrow[];
   user: Users;
+  loading = true;
+  errorMessage = '';
 
   constructor(private route: ActivatedRoute,
     private bookService: BooksService,
@@ -31,8 +33,7 @@ export class UserDetailsComponent implements OnInit {
     this.user = new Users();
     this.userService.getUserById(this.id).subscribe( data => {
       this.user = data;
-      console.log(data);
-    })
+    }, () => { this.loading = false; this.errorMessage = 'Cet adhérent est introuvable.'; });
 
     this.getBorrowedByUser(this.id);
     
@@ -41,8 +42,8 @@ export class UserDetailsComponent implements OnInit {
   private getBorrowedByUser(userId: number) {
     this.borrowService.getBooksBorrowedByUser(userId).subscribe(data => {
       this.borrow = data;
-      console.log(data);
-    });
+      this.loading = false;
+    }, () => { this.loading = false; this.errorMessage = 'L’historique de cet adhérent ne peut pas être chargé pour le moment.'; });
   }
 
 }
