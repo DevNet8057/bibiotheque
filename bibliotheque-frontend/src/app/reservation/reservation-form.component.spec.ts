@@ -34,4 +34,18 @@ describe('ReservationFormComponent', () => {
     expect(component.livreId).toBeNull();
     expect(component.adherentId).toBeNull();
   });
+
+  it('indique le statut du livre sélectionné à partir des exemplaires', () => {
+    component.books = [
+      { bookId: 4, bookName: 'Disponible', bookAuthor: 'A', bookGenre: 'Roman', noOfCopies: 2 },
+      { bookId: 5, bookName: 'Indisponible', bookAuthor: 'B', bookGenre: 'Roman', noOfCopies: 0 }
+    ];
+
+    component.livreId = 4;
+    expect(component.selectedBook?.bookName).toBe('Disponible');
+    expect(component.bookStatus(component.selectedBook!)).toBe('DISPONIBLE');
+
+    component.livreId = 5;
+    expect(component.bookStatus(component.selectedBook!)).toBe('INDISPONIBLE');
+  });
 });

@@ -15,7 +15,7 @@
     </div>
   </div>
 
-  <app-reservation-list [reservations]="visibleReservations" [allReservations]="reservations" [loading]="loading" [errorMessage]="errorMessage" [filter]="filter" (filterChanged)="filter = $event" (retryRequested)="loadData()" (cancelRequested)="cancelReservation($event)"></app-reservation-list>
+  <app-reservation-list [reservations]="reservations" [loading]="loading" [errorMessage]="errorMessage" [filter]="filter" (filterChanged)="filter = $event" (retryRequested)="loadData()" (cancelRequested)="cancelReservation($event)"></app-reservation-list>
 </div>
 
 <div *ngIf="pendingCancellation" class="modal-layer" (click)="closeCancellation()">

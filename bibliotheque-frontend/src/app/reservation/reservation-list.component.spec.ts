@@ -44,4 +44,33 @@ describe('ReservationListComponent', () => {
     expect(fixture.nativeElement.querySelectorAll('tbody tr').length).toBe(3);
     expect(fixture.nativeElement.querySelectorAll('.table-action--danger').length).toBe(2);
   });
+
+  it('conserve la liste complète après un aller-retour entre filtres', () => {
+    component.reservations = [
+      ...reservations,
+      { reservationId: 3, livreId: 12, livreNom: 'Livre C', adherentId: 22, adherentNom: 'Sara', dateReservation: '2026-08-03', dateExpiration: '2026-08-05', statut: 'DISPONIBLE' }
+    ];
+
+    component.filter = 'EN_ATTENTE';
+    expect(component.filteredReservations.map(item => item.reservationId)).toEqual([1]);
+
+    component.filter = 'TOUS';
+    fixture.detectChanges();
+    expect(component.filteredReservations.map(item => item.reservationId)).toEqual([1, 2, 3]);
+    expect(fixture.nativeElement.querySelectorAll('tbody tr').length).toBe(3);
+  });
+
+  it('émet le filtre demandé et suit chaque ligne par son identifiant', () => {
+    spyOn(component.filterChanged, 'emit');
+
+    component.selectFilter('DISPONIBLE');
+
+    expect(component.filterChanged.emit).toHaveBeenCalledWith('DISPONIBLE');
+    expect(component.trackByReservationId(0, reservations[1])).toBe(2);
+  });
+
+  it('affiche les dates renvoyées par le backend au format français', () => {
+    expect(component.formatDate('21-08-2026')).toBe('21/08/2026');
+    expect(component.formatDate('')).toBe('—');
+  });
 });

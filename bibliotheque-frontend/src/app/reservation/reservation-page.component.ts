@@ -43,10 +43,6 @@ export class ReservationPageComponent implements OnInit {
   }
 
   count(status: ReservationStatus): number { return this.reservations.filter(item => item.statut === status).length; }
-  get visibleReservations(): Reservation[] {
-    return this.filter === 'TOUS' ? this.reservations : this.reservations.filter(item => item.statut === this.filter);
-  }
-
   createReservation(request: ReservationRequest): void {
     this.saving = true;
     this.formErrorMessage = '';
