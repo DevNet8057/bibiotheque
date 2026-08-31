@@ -150,3 +150,23 @@ Contrôles finaux de la refonte globale : compilation, tests unitaires, contrats
 ## Prochaine étape
 
 Effectuer la recette visuelle et fonctionnelle dans un navigateur interactif dès qu'une surface navigateur est disponible, puis cocher uniquement les largeurs et scénarios réellement validés.
+
+## Captures de la Pull Request
+
+- [ ] Loading — non réalisée : aucune surface navigateur interactive n'est connectée à cette session.
+- [ ] Liste remplie — non réalisée : aucune surface navigateur interactive n'est connectée à cette session.
+- [ ] Liste vide — non réalisée : aucune surface navigateur interactive n'est connectée à cette session.
+- [ ] Erreur métier 409 — non réalisée : aucune surface navigateur interactive n'est connectée à cette session.
+- [ ] Responsive tablette — non vérifié visuellement.
+- [ ] Responsive mobile — non vérifié visuellement.
+
+### Vérifications préalables
+
+- Frontend actif sur `http://127.0.0.1:4200`.
+- Backend actif sur `http://localhost:8080`.
+- PostgreSQL et Adminer actifs dans Docker.
+- Aucune capture artificielle, aucune modification temporaire et aucune donnée métier n'ont été créées ou supprimées.
+
+### Blocage
+
+L'outil de contrôle navigateur ne détecte aucun navigateur connecté. Les captures exigées doivent provenir de l'application Angular réellement affichée ; elles ne peuvent donc pas être produites de manière conforme tant qu'une fenêtre Chrome ou Edge connectée n'est pas disponible.
