@@ -25,6 +25,7 @@ import java.util.Date;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -113,6 +114,13 @@ class ReservationSecurityIntegrationTest {
     }
 
     @Test
+    void doitRenvoyer403QuandAdherentTenteDAnnulerReservationDUnAutreAdherent() throws Exception {
+        mockMvc.perform(patch("/api/reservations/{id}/annuler", reservationAdherentB.getReservationId())
+                        .header(HttpHeaders.AUTHORIZATION, bearer(adherentA)))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
     void doitCreerReservationAuNomDeLAdherentAuthentifieMalgreUnAdherentIdUsurpe() throws Exception {
         Books autreLivreIndisponible = new Books();
         autreLivreIndisponible.setBookName("Autre livre indisponible");
@@ -137,6 +145,13 @@ class ReservationSecurityIntegrationTest {
         mockMvc.perform(get("/api/reservations").header(HttpHeaders.AUTHORIZATION, bearer(bibliothecaire)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)));
+    }
+
+    @Test
+    void doitAutoriserBibliothecaireASupprimerReservation() throws Exception {
+        mockMvc.perform(delete("/api/reservations/{id}", reservationAdherentB.getReservationId())
+                        .header(HttpHeaders.AUTHORIZATION, bearer(bibliothecaire)))
+                .andExpect(status().isNoContent());
     }
 
     private Users creerUtilisateur(String username, String roleName) {

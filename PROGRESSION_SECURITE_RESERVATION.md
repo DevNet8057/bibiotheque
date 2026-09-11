@@ -46,7 +46,7 @@ Séance terminée, commitée, poussée et proposée en Pull Request.
 ## Tests ajoutés
 
 - `ReservationServiceRG03Test` : troisième réservation autorisée avec deux actives, refusée à partir de trois; repositories Mockito mockés.
-- `ReservationSecurityIntegrationTest` : sans jeton 401, jeton invalide 401, liste ADHERENT filtrée 200, réservation d'un autre ADHERENT 403, DELETE ADHERENT 403, usurpation de `adherentId` neutralisée, liste BIBLIOTHECAIRE complète 200.
+- `ReservationSecurityIntegrationTest` : sans jeton 401, jeton invalide 401, liste ADHERENT filtrée 200, consultation et annulation d'une réservation d'un autre ADHERENT refusées (403), DELETE ADHERENT 403, usurpation de `adherentId` neutralisée, liste et suppression BIBLIOTHECAIRE autorisées.
 
 ## Tests exécutés
 
@@ -54,7 +54,7 @@ Séance terminée, commitée, poussée et proposée en Pull Request.
 
 ## Résultat des tests
 
-18 tests exécutés : 0 échec, 0 erreur, 0 ignoré — `BUILD SUCCESS`.
+20 tests exécutés : 0 échec, 0 erreur, 0 ignoré — `BUILD SUCCESS`.
 
 ## Fichiers créés
 
