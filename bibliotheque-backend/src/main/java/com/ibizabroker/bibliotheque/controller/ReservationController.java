@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,8 +40,10 @@ public class ReservationController {
             @ApiResponse(responseCode = "404", description = "Livre ou adhérent introuvable"),
             @ApiResponse(responseCode = "409", description = "Règle de gestion violée (RG-01, RG-02, RG-03)")
     })
-    public ResponseEntity<ReservationResponse> creerReservation(@RequestBody ReservationRequest request) {
-        ReservationResponse response = reservationService.creerReservation(request);
+    @PreAuthorize("hasAnyRole('ADHERENT', 'BIBLIOTHECAIRE')")
+    public ResponseEntity<ReservationResponse> creerReservation(@RequestBody ReservationRequest request,
+                                                                 Authentication authentication) {
+        ReservationResponse response = reservationService.creerReservation(request, authentication);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -51,10 +55,12 @@ public class ReservationController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Liste retournée avec succès")
     })
+    @PreAuthorize("hasAnyRole('ADHERENT', 'BIBLIOTHECAIRE')")
     public ResponseEntity<List<ReservationResponse>> listerReservations(
             @Parameter(description = "Filtrer par statut") @RequestParam(required = false) ReservationStatus statut,
-            @Parameter(description = "Filtrer par ID adhérent") @RequestParam(required = false) Integer adherentId) {
-        List<ReservationResponse> responses = reservationService.listerReservations(statut, adherentId);
+            @Parameter(description = "Filtrer par ID adhérent") @RequestParam(required = false) Integer adherentId,
+            Authentication authentication) {
+        List<ReservationResponse> responses = reservationService.listerReservations(statut, adherentId, authentication);
         return ResponseEntity.ok(responses);
     }
 
@@ -67,8 +73,10 @@ public class ReservationController {
             @ApiResponse(responseCode = "200", description = "Réservation trouvée"),
             @ApiResponse(responseCode = "404", description = "Réservation introuvable")
     })
-    public ResponseEntity<ReservationResponse> consulterReservation(@PathVariable Integer id) {
-        ReservationResponse response = reservationService.consulterReservation(id);
+    @PreAuthorize("hasAnyRole('ADHERENT', 'BIBLIOTHECAIRE')")
+    public ResponseEntity<ReservationResponse> consulterReservation(@PathVariable Integer id,
+                                                                      Authentication authentication) {
+        ReservationResponse response = reservationService.consulterReservation(id, authentication);
         return ResponseEntity.ok(response);
     }
 
@@ -82,8 +90,10 @@ public class ReservationController {
             @ApiResponse(responseCode = "404", description = "Réservation introuvable"),
             @ApiResponse(responseCode = "409", description = "Règle de gestion violée (RG-05, RG-06)")
     })
-    public ResponseEntity<ReservationResponse> annulerReservation(@PathVariable Integer id) {
-        ReservationResponse response = reservationService.annulerReservation(id);
+    @PreAuthorize("hasAnyRole('ADHERENT', 'BIBLIOTHECAIRE')")
+    public ResponseEntity<ReservationResponse> annulerReservation(@PathVariable Integer id,
+                                                                    Authentication authentication) {
+        ReservationResponse response = reservationService.annulerReservation(id, authentication);
         return ResponseEntity.ok(response);
     }
 
@@ -96,8 +106,9 @@ public class ReservationController {
             @ApiResponse(responseCode = "204", description = "Réservation supprimée"),
             @ApiResponse(responseCode = "404", description = "Réservation introuvable")
     })
-    public ResponseEntity<Void> supprimerReservation(@PathVariable Integer id) {
-        reservationService.supprimerReservation(id);
+    @PreAuthorize("hasRole('BIBLIOTHECAIRE')")
+    public ResponseEntity<Void> supprimerReservation(@PathVariable Integer id, Authentication authentication) {
+        reservationService.supprimerReservation(id, authentication);
         return ResponseEntity.noContent().build();
     }
 }

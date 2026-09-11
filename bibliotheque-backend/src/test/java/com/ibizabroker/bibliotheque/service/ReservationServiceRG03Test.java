@@ -11,6 +11,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,6 +42,7 @@ class ReservationServiceRG03Test {
     private Books livreIndisponible;
     private Users adherent;
     private ReservationRequest requestValide;
+    private Authentication authenticationAdherent;
 
     private static final List<ReservationStatus> STATUTS_ACTIFS = Arrays.asList(
             ReservationStatus.EN_ATTENTE, ReservationStatus.DISPONIBLE);
@@ -53,14 +57,19 @@ class ReservationServiceRG03Test {
         adherent = new Users();
         adherent.setUserId(10);
         adherent.setName("Jean Dupont");
+        adherent.setUsername("adherent-a");
 
         requestValide = new ReservationRequest();
         requestValide.setLivreId(1);
         requestValide.setAdherentId(10);
+
+        authenticationAdherent = new UsernamePasswordAuthenticationToken(
+                "adherent-a", null, Collections.singleton(new SimpleGrantedAuthority("ROLE_ADHERENT")));
+        when(usersRepository.findByUsername("adherent-a")).thenReturn(Optional.of(adherent));
     }
 
     @Test
-    void creerReservation_quandMoinsDe3Actives_doitReussir() {
+    void doitAutoriserTroisiemeReservationQuandAdherentEnPossedeDeuxActives() {
         // Arrange : l'adherent a deja 2 reservations actives
         when(booksRepository.findById(1)).thenReturn(Optional.of(livreIndisponible));
         when(usersRepository.findById(10)).thenReturn(Optional.of(adherent));
@@ -82,7 +91,7 @@ class ReservationServiceRG03Test {
         when(reservationRepository.save(any(Reservation.class))).thenReturn(savedReservation);
 
         // Act
-        ReservationResponse response = reservationService.creerReservation(requestValide);
+        ReservationResponse response = reservationService.creerReservation(requestValide, authenticationAdherent);
 
         // Assert
         assertNotNull(response);
@@ -91,7 +100,7 @@ class ReservationServiceRG03Test {
     }
 
     @Test
-    void creerReservation_quandExactement3Actives_doitEchouerRG03() {
+    void doitRefuserReservationQuandAdherentEnPossedeDejaTroisActives() {
         // Arrange
         when(booksRepository.findById(1)).thenReturn(Optional.of(livreIndisponible));
         when(usersRepository.findById(10)).thenReturn(Optional.of(adherent));
@@ -105,7 +114,7 @@ class ReservationServiceRG03Test {
 
         // Act & Assert
         ConflictException exception = assertThrows(ConflictException.class, () ->
-                reservationService.creerReservation(requestValide));
+                reservationService.creerReservation(requestValide, authenticationAdherent));
 
         assertTrue(exception.getMessage().contains("RG-03"));
         assertTrue(exception.getMessage().contains("3"));
@@ -116,7 +125,7 @@ class ReservationServiceRG03Test {
     }
 
     @Test
-    void creerReservation_quandPlusDe3Actives_doitEchouerRG03() {
+    void doitRefuserReservationQuandAdherentDepasseDejaLaLimiteDeTroisActives() {
         // Arrange
         when(booksRepository.findById(1)).thenReturn(Optional.of(livreIndisponible));
         when(usersRepository.findById(10)).thenReturn(Optional.of(adherent));
@@ -130,7 +139,7 @@ class ReservationServiceRG03Test {
 
         // Act & Assert
         ConflictException exception = assertThrows(ConflictException.class, () ->
-                reservationService.creerReservation(requestValide));
+                reservationService.creerReservation(requestValide, authenticationAdherent));
 
         assertTrue(exception.getMessage().contains("RG-03"));
         assertTrue(exception.getMessage().contains("5"));
@@ -139,7 +148,7 @@ class ReservationServiceRG03Test {
     }
 
     @Test
-    void creerReservation_quandAucuneActive_doitReussir() {
+    void doitAutoriserReservationQuandAdherentNAucuneReservationActive() {
         // Arrange : premier appel, aucune reservation existante
         when(booksRepository.findById(1)).thenReturn(Optional.of(livreIndisponible));
         when(usersRepository.findById(10)).thenReturn(Optional.of(adherent));
@@ -160,7 +169,7 @@ class ReservationServiceRG03Test {
         when(reservationRepository.save(any(Reservation.class))).thenReturn(savedReservation);
 
         // Act
-        ReservationResponse response = reservationService.creerReservation(requestValide);
+        ReservationResponse response = reservationService.creerReservation(requestValide, authenticationAdherent);
 
         // Assert
         assertNotNull(response);
@@ -169,7 +178,7 @@ class ReservationServiceRG03Test {
     }
 
     @Test
-    void creerReservation_apresAnnulation_doitDecrementerLeCompteur() {
+    void doitAutoriserReservationQuandUneAnnulationRameneLeCompteurADeux() {
         // Simule : l'adherent avait 3 reservations, en a annulee 1, donc 2 restent
         when(booksRepository.findById(1)).thenReturn(Optional.of(livreIndisponible));
         when(usersRepository.findById(10)).thenReturn(Optional.of(adherent));
@@ -190,7 +199,7 @@ class ReservationServiceRG03Test {
         when(reservationRepository.save(any(Reservation.class))).thenReturn(savedReservation);
 
         // Act
-        ReservationResponse response = reservationService.creerReservation(requestValide);
+        ReservationResponse response = reservationService.creerReservation(requestValide, authenticationAdherent);
 
         // Assert
         assertNotNull(response);
