@@ -19,7 +19,7 @@
 
 ## Étape actuelle
 
-Séance terminée, validée par les tests et prête au commit/push.
+Séance terminée, commitée, poussée et proposée en Pull Request.
 
 ## Terminé
 
@@ -89,8 +89,15 @@ Séance terminée, validée par les tests et prête au commit/push.
 ## Reste à faire
 
 - [x] RS-01 à RS-05, tests et capture.
-- [ ] Commit, push et Pull Request.
+- [x] Commit, push et Pull Request.
+
+## Livraison Git
+
+- Commit sécurité : `660838d` — `feat: sécuriser et tester le module réservation`.
+- Branche poussée : `origin/feature/reservation-securite-prenom-nom` sur `DevNet8057/bibiotheque`.
+- Pull Request : [#83 — Séance 4 - Sécurisation et tests du module Réservation](https://github.com/KFOKAM48/bibiotheque/pull/83), vers `KFOKAM48/bibiotheque:main`.
+- Aucun pair précis n'a été identifié automatiquement pour une demande de revue; la PR est prête à être assignée dans le workflow de l'équipe.
 
 ## Prochaine étape
 
-Vérification Maven `package`, puis commit, push sur `origin` et création de la Pull Request.
+Faire relire et valider la PR #83, puis utiliser les comptes de test `ADHERENT_A`, `ADHERENT_B` et `BIBLIOTHECAIRE` dans la démonstration.
