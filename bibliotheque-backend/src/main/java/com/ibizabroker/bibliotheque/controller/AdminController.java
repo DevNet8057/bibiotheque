@@ -1,66 +1,54 @@
 package com.ibizabroker.bibliotheque.controller;
 
-import com.ibizabroker.bibliotheque.dao.UsersRepository;
+import com.ibizabroker.bibliotheque.entity.UserResponse;
 import com.ibizabroker.bibliotheque.entity.Users;
-import com.ibizabroker.bibliotheque.exceptions.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ibizabroker.bibliotheque.service.UserManagementService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@CrossOrigin("http://localhost:4200/")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private UsersRepository usersRepository;
+    private final UserManagementService userManagementService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public AdminController(UserManagementService userManagementService) {
+        this.userManagementService = userManagementService;
+    }
 
     @PostMapping("/users")
-//    @PreAuthorize("hasRole('Admin')")
-    public Users addUserByAdmin(@RequestBody Users user) {
-//        Role role = new Role();
-////        role.setRoleName(UserConstant.DEFAULT_ROLE);
-//        role.setRoleName(role.getRoleName());
-//        Set<Role> setRole = new HashSet<>();
-//        setRole.add(role);
-//        user.setRole(setRole);
-        String password = user.getPassword();
-        String encryptPassword = passwordEncoder.encode(password);
-        user.setPassword(encryptPassword);
-        usersRepository.save(user);
-        return user;
+    @PreAuthorize("hasRole('ADMINISTRATEUR')")
+    public ResponseEntity<UserResponse> addUserByAdmin(@RequestBody Users user) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userManagementService.create(user));
     }
 
     @GetMapping("/users")
-    @PreAuthorize("hasRole('Admin')")
-    public List<Users> getAllUsers() {
-        return usersRepository.findAll();
+    @PreAuthorize("hasAnyRole('ADMINISTRATEUR', 'BIBLIOTHECAIRE')")
+    public List<UserResponse> getAllUsers() {
+        return userManagementService.list();
     }
 
-    @PreAuthorize("hasRole('Admin')")
     @GetMapping("/users/{id}")
-    public ResponseEntity<Users> getUserById(@PathVariable Integer id) {
-        Users user = usersRepository.findById(id).orElseThrow(() -> new NotFoundException("User with id "+ id +" does not exist."));
-        return ResponseEntity.ok(user);
+    @PreAuthorize("hasRole('ADMINISTRATEUR')")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable Integer id) {
+        return ResponseEntity.ok(userManagementService.getById(id));
     }
 
-    @PreAuthorize("hasRole('Admin')")
     @PutMapping("/users/{id}")
-    public ResponseEntity<Users> updateUser(@PathVariable Integer id, @RequestBody Users userDetails) {
-        Users user = usersRepository.findById(id).orElseThrow(() -> new NotFoundException("User with id "+ id +" does not exist."));
-
-        user.setName(userDetails.getName());
-        user.setRole(userDetails.getRole());
-        user.setUsername(userDetails.getUsername());
-
-        Users updatedUser = usersRepository.save(user);
-        return ResponseEntity.ok(updatedUser);
+    @PreAuthorize("hasRole('ADMINISTRATEUR')")
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Integer id, @RequestBody Users userDetails) {
+        return ResponseEntity.ok(userManagementService.update(id, userDetails));
     }
 }

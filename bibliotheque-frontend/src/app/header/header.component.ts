@@ -19,8 +19,15 @@ export class HeaderComponent {
 
   get name(): string { return this.userAuthService.getName() || 'Lecteur'; }
   get isLoggedIn(): boolean { return !!this.userAuthService.isLoggedIn(); }
-  get isAdmin(): boolean { return this.userService.roleMatch(['Admin']); }
-  get isUser(): boolean { return this.userService.roleMatch(['Admin', 'User']); }
+  get isAdministrator(): boolean { return this.userService.roleMatch(['ADMINISTRATEUR']); }
+  get isLibrarian(): boolean { return this.userService.roleMatch(['BIBLIOTHECAIRE']); }
+  get isAdherent(): boolean { return this.userService.roleMatch(['ADHERENT']); }
+  get canManageBooks(): boolean { return this.isAdministrator || this.isLibrarian; }
+  get roleLabel(): string {
+    if (this.isAdministrator) { return 'Administrateur'; }
+    if (this.isLibrarian) { return 'Bibliothécaire'; }
+    return 'Adhérent';
+  }
 
   toggleMenu(): void { this.menuOpen = !this.menuOpen; }
   closeMenu(): void { this.menuOpen = false; }

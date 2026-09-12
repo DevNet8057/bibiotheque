@@ -1,6 +1,7 @@
 package com.ibizabroker.bibliotheque.controller;
 
 import com.ibizabroker.bibliotheque.dao.BooksRepository;
+import com.ibizabroker.bibliotheque.dao.RoleRepository;
 import com.ibizabroker.bibliotheque.dao.ReservationRepository;
 import com.ibizabroker.bibliotheque.dao.UsersRepository;
 import com.ibizabroker.bibliotheque.entity.Books;
@@ -47,6 +48,9 @@ class ReservationSecurityIntegrationTest {
     private UsersRepository usersRepository;
 
     @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
     private JwtService jwtService;
 
     @Autowired
@@ -68,7 +72,7 @@ class ReservationSecurityIntegrationTest {
         adherentA = creerUtilisateur("ADHERENT_A", "ADHERENT");
         adherentB = creerUtilisateur("ADHERENT_B", "ADHERENT");
         bibliothecaire = creerUtilisateur("BIBLIOTHECAIRE", "BIBLIOTHECAIRE");
-        administrateur = creerUtilisateur("ADMIN", "Admin");
+        administrateur = creerUtilisateur("ADMIN", "ADMINISTRATEUR");
 
         livreIndisponible = new Books();
         livreIndisponible.setBookName("Livre indisponible");
@@ -168,8 +172,7 @@ class ReservationSecurityIntegrationTest {
     }
 
     private Users creerUtilisateur(String username, String roleName) {
-        Role role = new Role();
-        role.setRoleName(roleName);
+        Role role = roleRepository.findFirstByRoleName(roleName).orElseThrow();
 
         Users utilisateur = new Users();
         utilisateur.setUsername(username);

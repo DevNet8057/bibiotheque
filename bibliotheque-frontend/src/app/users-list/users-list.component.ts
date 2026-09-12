@@ -42,5 +42,12 @@ export class UsersListComponent implements OnInit {
   }
 
   roleName(user: Users): string { return user.role && user.role.length ? user.role[0].roleName : 'Non défini'; }
+  roleLabel(user: Users): string {
+    const role = this.roleName(user);
+    if (role === 'ADMINISTRATEUR') { return 'Administrateur'; }
+    if (role === 'BIBLIOTHECAIRE') { return 'Bibliothécaire'; }
+    if (role === 'ADHERENT') { return 'Adhérent'; }
+    return 'Non défini';
+  }
 
 }

@@ -224,7 +224,7 @@ public class ReservationService {
     }
 
     private boolean estBibliothecaire(Authentication authentication) {
-        return aRole(authentication, "ROLE_BIBLIOTHECAIRE") || aRole(authentication, "ROLE_Admin");
+        return aRole(authentication, "ROLE_BIBLIOTHECAIRE") || aRole(authentication, "ROLE_ADMINISTRATEUR");
     }
 
     private boolean aRole(Authentication authentication, String role) {

@@ -7,6 +7,7 @@ import { Users } from '../_model/users';
 import { BooksService } from '../_service/books.service';
 import { ReservationService } from '../_service/reservation.service';
 import { UsersService } from '../_service/users.service';
+import { UserAuthService } from '../_service/user-auth.service';
 import { ReservationFormComponent } from './reservation-form.component';
 
 @Component({ selector: 'app-reservation-page', templateUrl: './reservation-page.component.html', styleUrls: ['./reservation-page.component.css'] })
@@ -24,16 +25,20 @@ export class ReservationPageComponent implements OnInit {
   feedbackMessage = '';
   pendingCancellation: Reservation | null = null;
   readonly statuses: ReservationStatus[] = ['EN_ATTENTE', 'DISPONIBLE', 'ANNULEE', 'EXPIREE', 'HONOREE'];
+  readonly adherentId = this.userAuthService.getUserId();
 
-  constructor(private booksService: BooksService, private usersService: UsersService, private reservationService: ReservationService) { }
+  constructor(private booksService: BooksService, private usersService: UsersService, private reservationService: ReservationService,
+              private userAuthService: UserAuthService) { }
   ngOnInit(): void { this.loadData(); }
 
   loadData(): void {
     this.loading = true;
     this.errorMessage = '';
-    forkJoin({ books: this.booksService.getBooksList(), users: this.usersService.getUsersList(), reservations: this.reservationService.getReservations() }).subscribe(data => {
+    const baseRequests = { books: this.booksService.getBooksList(), reservations: this.reservationService.getReservations() };
+    const requests = this.isAdherent ? baseRequests : { ...baseRequests, users: this.usersService.getUsersList() };
+    forkJoin(requests).subscribe((data: any) => {
       this.books = data.books;
-      this.users = data.users.filter(user => !user.role || !user.role.length || user.role.some((role: { roleName: string }) => role.roleName === 'User'));
+      this.users = this.isAdherent ? [] : data.users.filter((user: Users) => user.role && user.role.some((role: { roleName: string }) => role.roleName === 'ADHERENT'));
       this.reservations = data.reservations;
       this.loading = false;
     }, () => {
@@ -41,6 +46,8 @@ export class ReservationPageComponent implements OnInit {
       this.errorMessage = 'Le service de la bibliothèque est momentanément injoignable. Vérifiez votre connexion puis réessayez.';
     });
   }
+
+  get isAdherent(): boolean { return this.usersService.roleMatch(['ADHERENT']); }
 
   count(status: ReservationStatus): number { return this.reservations.filter(item => item.statut === status).length; }
   createReservation(request: ReservationRequest): void {

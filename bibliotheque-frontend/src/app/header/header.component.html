@@ -10,19 +10,19 @@
     <span class="brand-card__icon">📚</span><span><b>BIBLIO</b><small>3D</small></span>
   </a>
   <nav class="main-nav">
-    <a *ngIf="isAdmin" routerLink="/" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active" (click)="closeMenu()"><img src="assets/ui/dashboard.svg" alt=""><span>Tableau de bord</span></a>
-    <a *ngIf="isAdmin" routerLink="/books" routerLinkActive="active" (click)="closeMenu()"><img src="assets/ui/books.svg" alt=""><span>Livres</span></a>
-    <a *ngIf="isAdmin" routerLink="/users" routerLinkActive="active" (click)="closeMenu()"><img src="assets/ui/users.svg" alt=""><span>Adhérents</span></a>
-    <a *ngIf="isAdmin" routerLink="/reservations" routerLinkActive="active" (click)="closeMenu()"><img src="assets/ui/reservations.svg" alt=""><span>Réservations</span></a>
-    <a *ngIf="isUser" routerLink="/borrow-book" routerLinkActive="active" (click)="closeMenu()"><img src="assets/ui/borrow.svg" alt=""><span>Emprunts</span></a>
-    <a *ngIf="isUser" routerLink="/return-book" routerLinkActive="active" (click)="closeMenu()"><img src="assets/ui/return.svg" alt=""><span>Retour</span></a>
+    <a *ngIf="isAdministrator" routerLink="/" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active" (click)="closeMenu()"><img src="assets/ui/dashboard.svg" alt=""><span>Tableau de bord</span></a>
+    <a *ngIf="canManageBooks || isAdherent" routerLink="/books" routerLinkActive="active" (click)="closeMenu()"><img src="assets/ui/books.svg" alt=""><span>Livres</span></a>
+    <a *ngIf="isAdministrator" routerLink="/users" routerLinkActive="active" (click)="closeMenu()"><img src="assets/ui/users.svg" alt=""><span>Utilisateurs</span></a>
+    <a *ngIf="isAdministrator || isLibrarian || isAdherent" routerLink="/reservations" routerLinkActive="active" (click)="closeMenu()"><img src="assets/ui/reservations.svg" alt=""><span>Réservations</span></a>
+    <a *ngIf="isAdherent" routerLink="/borrow-book" routerLinkActive="active" (click)="closeMenu()"><img src="assets/ui/borrow.svg" alt=""><span>Emprunts</span></a>
+    <a *ngIf="isAdherent" routerLink="/return-book" routerLinkActive="active" (click)="closeMenu()"><img src="assets/ui/return.svg" alt=""><span>Retour</span></a>
     <span class="nav-disabled"><img src="assets/ui/reports.svg" alt=""><span>Rapports</span><small>Bientôt</small></span>
     <span class="nav-disabled"><img src="assets/ui/settings.svg" alt=""><span>Paramètres</span><small>Bientôt</small></span>
   </nav>
   <img class="sidebar-illustration" src="assets/ui/librarian.png" alt="Jeune lecteur tenant un livre">
   <section class="profile-card" *ngIf="isLoggedIn">
     <span class="profile-card__avatar">{{ name.charAt(0) | uppercase }}</span>
-    <span class="profile-card__copy"><b>{{ name }}</b><small><i></i>{{ isAdmin ? 'Bibliothécaire' : 'Adhérent' }}</small></span>
+    <span class="profile-card__copy"><b>{{ name }}</b><small><i></i>{{ roleLabel }}</small></span>
     <button type="button" title="Se déconnecter" aria-label="Se déconnecter" (click)="logout()">↪</button>
   </section>
   <a *ngIf="!isLoggedIn" class="login-link" routerLink="/login">Se connecter</a>

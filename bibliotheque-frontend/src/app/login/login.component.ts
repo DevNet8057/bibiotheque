@@ -34,7 +34,13 @@ export class LoginComponent implements OnInit {
 
         this.loading = false;
         const role = response.user.role[0].roleName;
-        this.router.navigate(role === 'Admin' ? ['/'] : ['/borrow-book']);
+        if (role === 'ADMINISTRATEUR') {
+          this.router.navigate(['/']);
+        } else if (role === 'BIBLIOTHECAIRE') {
+          this.router.navigate(['/reservations']);
+        } else {
+          this.router.navigate(['/borrow-book']);
+        }
       },
       (error)=>{
         this.loading = false;

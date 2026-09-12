@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Users } from '../_model/users';
 import { UsersService } from '../_service/users.service';
+import { Roles } from '../_auth/roles';
 
 @Component({
   selector: 'app-registration',
@@ -18,7 +19,7 @@ export class RegistrationComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.user.role = [{ roleName: 'User' }];
+    this.user.role = [{ roleName: Roles.adherent }];
   }
 
   saveUser() {
@@ -26,7 +27,7 @@ export class RegistrationComponent implements OnInit {
     this.errorMessage = '';
     this.usersService.createUser(this.user).subscribe(data => {
       this.saving = false;
-      this.successMessage = 'L’adhérent a été créé avec succès.';
+      this.successMessage = 'Le compte a été créé avec succès.';
       setTimeout(() => this.goToUsersList(), 700);
     },
     () => { this.saving = false; this.errorMessage = 'Le compte n’a pas pu être créé. Vérifiez que l’identifiant n’est pas déjà utilisé.'; });

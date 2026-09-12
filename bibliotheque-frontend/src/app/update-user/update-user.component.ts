@@ -24,7 +24,7 @@ export class UpdateUserComponent implements OnInit {
     this.userId = this.route.snapshot.params['userId'];
     this.usersService.getUserById(this.userId).subscribe(data => {
       this.user = data;
-      if (!this.user.role || !this.user.role.length) { this.user.role = [{ roleName: 'User' }]; }
+    if (!this.user.role || !this.user.role.length) { this.user.role = [{ roleName: 'ADHERENT' }]; }
       this.loading = false;
     }, () => { this.loading = false; this.errorMessage = 'Cet adhérent est introuvable. Retournez à la liste puis réessayez.'; });
   }

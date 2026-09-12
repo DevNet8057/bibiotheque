@@ -17,20 +17,20 @@ import { AuthGuard } from './_auth/auth.guard';
 import { ReservationPageComponent } from './reservation/reservation-page.component';
 
 const routes: Routes = [
-  {path: 'books', component: BooksListComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
-  {path: 'create-book', component: CreateBookComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
-  {path: '', component: HomeComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
-  {path: 'update-book/:bookId', component: UpdateBookComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
-  {path: 'book-details/:bookId', component: BookDetailsComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
-  {path: 'users', component: UsersListComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
-  {path: 'register-user', component: RegistrationComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
-  {path: 'user-details/:userId', component: UserDetailsComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
-  {path: 'update-user/:userId', component: UpdateUserComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
+  {path: 'books', component: BooksListComponent, canActivate:[AuthGuard], data:{roles:['ADMINISTRATEUR', 'BIBLIOTHECAIRE', 'ADHERENT']}},
+  {path: 'create-book', component: CreateBookComponent, canActivate:[AuthGuard], data:{roles:['ADMINISTRATEUR', 'BIBLIOTHECAIRE']}},
+  {path: '', component: HomeComponent, canActivate:[AuthGuard], data:{roles:['ADMINISTRATEUR']}},
+  {path: 'update-book/:bookId', component: UpdateBookComponent, canActivate:[AuthGuard], data:{roles:['ADMINISTRATEUR', 'BIBLIOTHECAIRE']}},
+  {path: 'book-details/:bookId', component: BookDetailsComponent, canActivate:[AuthGuard], data:{roles:['ADMINISTRATEUR', 'BIBLIOTHECAIRE', 'ADHERENT']}},
+  {path: 'users', component: UsersListComponent, canActivate:[AuthGuard], data:{roles:['ADMINISTRATEUR']}},
+  {path: 'register-user', component: RegistrationComponent, canActivate:[AuthGuard], data:{roles:['ADMINISTRATEUR']}},
+  {path: 'user-details/:userId', component: UserDetailsComponent, canActivate:[AuthGuard], data:{roles:['ADMINISTRATEUR']}},
+  {path: 'update-user/:userId', component: UpdateUserComponent, canActivate:[AuthGuard], data:{roles:['ADMINISTRATEUR']}},
   {path: 'login', component: LoginComponent},
   {path: 'forbidden', component: ForbiddenComponent},
-  {path: 'borrow-book', component: BorrowBookComponent, canActivate:[AuthGuard], data:{roles:['Admin', 'User']}},
-  {path: 'return-book', component: ReturnBookComponent, canActivate:[AuthGuard], data:{roles:['Admin', 'User']}},
-  {path: 'reservations', component: ReservationPageComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
+  {path: 'borrow-book', component: BorrowBookComponent, canActivate:[AuthGuard], data:{roles:['ADHERENT']}},
+  {path: 'return-book', component: ReturnBookComponent, canActivate:[AuthGuard], data:{roles:['ADHERENT']}},
+  {path: 'reservations', component: ReservationPageComponent, canActivate:[AuthGuard], data:{roles:['ADMINISTRATEUR', 'BIBLIOTHECAIRE', 'ADHERENT']}},
   {path: '**', redirectTo: ''}
 ];
 

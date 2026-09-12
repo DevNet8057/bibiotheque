@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin("http://localhost:4200/")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/admin")
 public class BooksController {
@@ -21,24 +21,25 @@ public class BooksController {
     private BooksRepository booksRepository;
 
     @GetMapping("/books")
+    @PreAuthorize("isAuthenticated()")
     public List<Books> getAllBooks(){
         return booksRepository.findAll();
     }
 
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/books/{id}")
     public ResponseEntity<Books> getBookById(@PathVariable Integer id) {
         Books book = booksRepository.findById(id).orElseThrow(() -> new NotFoundException("Book with id "+ id +" does not exist."));
         return ResponseEntity.ok(book);
     }
 
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasAnyRole('ADMINISTRATEUR', 'BIBLIOTHECAIRE')")
     @PostMapping("/books")
     public Books createBook(@RequestBody Books book) {
         return booksRepository.save(book);
     }
 
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasAnyRole('ADMINISTRATEUR', 'BIBLIOTHECAIRE')")
     @PutMapping("/books/{id}")
     public ResponseEntity<Books> updateBook(@PathVariable Integer id, @RequestBody Books bookDetails) {
         Books book = booksRepository.findById(id).orElseThrow(() -> new NotFoundException("Book with id "+ id +" does not exist."));
@@ -52,7 +53,7 @@ public class BooksController {
         return ResponseEntity.ok(updatedBook);
     }
 
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasAnyRole('ADMINISTRATEUR', 'BIBLIOTHECAIRE')")
     @DeleteMapping("/books/{id}")
     public ResponseEntity<Map<String, Boolean>> deleteBook(@PathVariable Integer id) {
         Books book = booksRepository.findById(id).orElseThrow(() -> new NotFoundException("Book with id "+ id +" does not exist."));
