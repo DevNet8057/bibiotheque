@@ -55,6 +55,7 @@ class ReservationSecurityIntegrationTest {
     private Users adherentA;
     private Users adherentB;
     private Users bibliothecaire;
+    private Users administrateur;
     private Books livreIndisponible;
     private Reservation reservationAdherentB;
 
@@ -67,6 +68,7 @@ class ReservationSecurityIntegrationTest {
         adherentA = creerUtilisateur("ADHERENT_A", "ADHERENT");
         adherentB = creerUtilisateur("ADHERENT_B", "ADHERENT");
         bibliothecaire = creerUtilisateur("BIBLIOTHECAIRE", "BIBLIOTHECAIRE");
+        administrateur = creerUtilisateur("ADMIN", "Admin");
 
         livreIndisponible = new Books();
         livreIndisponible.setBookName("Livre indisponible");
@@ -151,6 +153,17 @@ class ReservationSecurityIntegrationTest {
     void doitAutoriserBibliothecaireASupprimerReservation() throws Exception {
         mockMvc.perform(delete("/api/reservations/{id}", reservationAdherentB.getReservationId())
                         .header(HttpHeaders.AUTHORIZATION, bearer(bibliothecaire)))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void doitAutoriserAdministrateurAListerEtSupprimerToutesLesReservations() throws Exception {
+        mockMvc.perform(get("/api/reservations").header(HttpHeaders.AUTHORIZATION, bearer(administrateur)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
+
+        mockMvc.perform(delete("/api/reservations/{id}", reservationAdherentB.getReservationId())
+                        .header(HttpHeaders.AUTHORIZATION, bearer(administrateur)))
                 .andExpect(status().isNoContent());
     }
 

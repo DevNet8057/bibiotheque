@@ -28,8 +28,8 @@ const routes: Routes = [
   {path: 'update-user/:userId', component: UpdateUserComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
   {path: 'login', component: LoginComponent},
   {path: 'forbidden', component: ForbiddenComponent},
-  {path: 'borrow-book', component: BorrowBookComponent, canActivate:[AuthGuard], data:{roles:['User']}},
-  {path: 'return-book', component: ReturnBookComponent, canActivate:[AuthGuard], data:{roles:['User']}},
+  {path: 'borrow-book', component: BorrowBookComponent, canActivate:[AuthGuard], data:{roles:['Admin', 'User']}},
+  {path: 'return-book', component: ReturnBookComponent, canActivate:[AuthGuard], data:{roles:['Admin', 'User']}},
   {path: 'reservations', component: ReservationPageComponent, canActivate:[AuthGuard], data:{roles:['Admin']}},
   {path: '**', redirectTo: ''}
 ];

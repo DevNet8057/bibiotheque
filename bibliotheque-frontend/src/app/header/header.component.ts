@@ -20,7 +20,7 @@ export class HeaderComponent {
   get name(): string { return this.userAuthService.getName() || 'Lecteur'; }
   get isLoggedIn(): boolean { return !!this.userAuthService.isLoggedIn(); }
   get isAdmin(): boolean { return this.userService.roleMatch(['Admin']); }
-  get isUser(): boolean { return this.userService.roleMatch(['User']); }
+  get isUser(): boolean { return this.userService.roleMatch(['Admin', 'User']); }
 
   toggleMenu(): void { this.menuOpen = !this.menuOpen; }
   closeMenu(): void { this.menuOpen = false; }
